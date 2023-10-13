@@ -1,7 +1,3 @@
-using MongoDB.Driver;
-using MongoDB.Entities;
-using SearchService;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,14 +11,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await DB.InitAsync("SearchDb", MongoClientSettings
-    .FromConnectionString(builder.Configuration.GetConnectionString("MongoDbConnection")));
-
-// create index for fields that need to be searched on
-await DB.Index<Item>()
-    .Key(x => x.Make, KeyType.Text)
-    .Key(x => x.Model, KeyType.Text)
-    .Key(x => x.Color, KeyType.Text) 
-    .CreateAsync();   
-
+try
+{
+    await DbInitializer.InitDb(app);
+}
+catch(Exception e)
+{
+   Console.WriteLine(e); 
+}
 app.Run();
