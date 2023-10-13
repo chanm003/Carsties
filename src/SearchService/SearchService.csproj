@@ -11,4 +11,8 @@
     <PackageReference Include="MongoDB.Entities" Version="22.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>
