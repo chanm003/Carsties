@@ -61,13 +61,13 @@ public class AuctionsController: ControllerBase
         auction.Seller = "test";
         _context.Auctions.Add(auction);
 
-        // at least one change was saved to DB
-        var result = await _context.SaveChangesAsync() > 0;
-
         var newAuction = _mapper.Map<AuctionDto>(auction);
 
         // from DTO to event
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+
+        // at least one change was saved to DB
+        var result = await _context.SaveChangesAsync() > 0;
 
         if (!result)
         {
